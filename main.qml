@@ -75,7 +75,7 @@ Window {
             id:videoContainer
             width : root.width
             height : root.height - 150
-            // color: "black"
+            color: "black"
 
             CroppableImage {
                 id: mainImage

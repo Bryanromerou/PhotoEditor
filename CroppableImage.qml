@@ -56,6 +56,80 @@ Item {
             }
         }
 
+        // ----------------------------CROPPING COMPONENTS----------------------------
+        // This is the thin white line outside and the transparent filter showing that you are in cropMode
+        Rectangle{
+            id:cropBorder
+            visible: cropMode
+            anchors.fill: mainImage
+            color: "transparent"
+            border.color: "white"
+            border.width: 2
+        }
+
+        // Top-Left Handle(0)
+        CropHandle{
+            id:tl
+            // When moved to the left or right also move Bottom-Left(2)
+            // When moved up or down also move Top-Right(1)
+            dragableArea: parent
+            cropBorder: cropBorder
+            visible: cropMode
+            x: cropBorder.x
+            y: cropBorder.y
+            onActivated: {
+                bl.x = xPosition
+                tr.y = yPosition
+            }
+        }
+
+        // Top-Right Handle(1)
+        CropHandle{
+            id:tr
+            // When moved to left or right also move Bottom-Right(3)
+            // When moved up or down also move Top-Left(0)
+            dragableArea: parent
+            cropBorder: cropBorder
+            visible: cropMode
+            rotation: 90
+            x: cropBorder.width - tr.width
+            y: cropBorder.y
+            onActivated: {
+                br.x = cropBorder.width - tr.width - yPosition
+                tl.y = xPosition
+            }
+        }
+
+        // Bottom-Left Handle(2)
+        CropHandle{
+            id:bl
+            // When moved to left or right also move Top-Left(0)
+            // When moved up or down also move Bottom-Right(3)
+            dragableArea: parent
+            cropBorder: cropBorder
+            visible: cropMode
+            rotation: 270
+            x: cropBorder.x
+            y: cropBorder.height - bl.height
+            onActivated: {
+                br.x = cropBorder.width - tr.width - yPosition
+                tl.y = xPosition
+            }
+        }
+
+        // Bottom-Right Handle(3)
+        CropHandle{
+            id:br
+            // When moved to left or right also move Top-Right(1)
+            // When moved up or down also move Bottom-Left(0)
+            dragableArea: parent
+            cropBorder: cropBorder
+            visible: cropMode
+            rotation: 180
+            x: cropBorder.width - br.width
+            y: cropBorder.height - br.height
+        }
+
         // This is the canvas component that allows the user to draw on the picture
         Canvas{
                 id:canvas
@@ -189,54 +263,60 @@ Item {
                     ctx.stroke()
 
                 }
+
+
             }
     }
 
 
     // ----------------------------CROPPING COMPONENTS----------------------------
     // This is the thin white line outside and the transparent filter showing that you are in cropMode
-    Rectangle{
-        id:cropBorder
-        visible: cropMode
-        anchors.fill: mainImage
-        color: "#54C0B7FF"
-        anchors.margins: -5
-    }
+//    Rectangle{
+//        id:cropBorder
+//        visible: cropMode
+//        anchors.fill: mainImage
+//        color: "transparent"
+//        border.color: "white"
+//        border.width: 2
+//    }
 
-    // Top-Left Handle
-    CropHandle{
-        cropBorder: cropBorder
-        visible: cropMode
-        anchors.left: cropBorder.left
-        anchors.top: cropBorder.top
-    }
+//    // Top-Left Handle
+//    CropHandle{
+//        dragableArea: mainImage
+//        cropBorder: cropBorder
+//        visible: cropMode
+//        anchors.left: cropBorder.left
+//        anchors.top: cropBorder.top
+//    }
 
-    // Top-Right Handle
-    CropHandle{
-        cropBorder: cropBorder
-        visible: cropMode
-        rotation: 90
-        anchors.right: cropBorder.right
-        anchors.top: cropBorder.top
-    }
+//    // Top-Right Handle
+//    CropHandle{
+//        dragableArea: mainImage
+//        cropBorder: cropBorder
+//        visible: cropMode
+//        rotation: 90
+//        anchors.right: cropBorder.right
+//        anchors.top: cropBorder.top
+//    }
 
-    // Bottom-Right Handle
-    CropHandle{
-        cropBorder: cropBorder
-        visible: cropMode
-        rotation: 180
-        anchors.right: cropBorder.right
-        anchors.bottom: cropBorder.bottom
-    }
+//    // Bottom-Right Handle
+//    CropHandle{
+//        dragableArea: mainImage
+//        cropBorder: cropBorder
+//        visible: cropMode
+//        rotation: 180
+//        anchors.right: cropBorder.right
+//        anchors.bottom: cropBorder.bottom
+//    }
 
-    // Bottom-Left Handle
-    CropHandle{
-        cropBorder: cropBorder
-        visible: cropMode
-        rotation: 270
-        anchors.left: cropBorder.left
-        anchors.bottom: cropBorder.bottom
-    }
+//    // Bottom-Left Handle
+//    CropHandle{
+//        dragableArea: mainImage
+//        cropBorder: cropBorder
+//        visible: cropMode
+//        rotation: 270
+//        anchors.left: cropBorder.left
+//        anchors.bottom: cropBorder.bottom
+//    }
 
-    
 }

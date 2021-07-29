@@ -7,15 +7,16 @@ Item {
     visible: false
     property var cropBorder: null
     property int rotation: 0
-    property color handleColor: "red"
-
+    property color handleColor: "white"
+    property var dragableArea: null
     property double maximum: 10
     property double value:    0
     property double minimum:  0
-//    property /*type*/ name: value
+    //property type name: value
 
     //onClicked:{root.value = value;  print('onClicked', value)}
     signal clicked(double value);
+    signal activated(real xPosition, real yPosition)
 
     // Corner Keys
     // Top-Right   : 0
@@ -34,13 +35,16 @@ Item {
             horizontalBar.x = root.height
             verticalBar.y = -root.height - 1
             verticalBar.x = root.height
+            horizontalArea.drag.maximumY = dragableArea.width - root.width
+            horizontalArea.drag.maximumX = dragableArea.height - root.width
+            verticalArea.drag.maximumY = dragableArea.width - root.width
+            verticalArea.drag.maximumX = dragableArea.height - root.width
         }
     }
 
     Item{
         // Gave Id of Handle to move both rectangles(aka handle) at once
         id:handle
-
         Rectangle{
             id:horizontalBar
             Component.onCompleted: adjust()
@@ -48,8 +52,20 @@ Item {
             width: root.width
             height: root.height
             MouseArea{
+                id:horizontalArea
                 anchors.fill: parent
                 drag.target: handle
+                drag{
+                    axis:Drag.XandYAxis
+                    minimumY: 0
+                    maximumY: dragableArea.height - root.width
+                    minimumX: 0
+                    maximumX: dragableArea.width - root.width
+                }
+                onPositionChanged: {
+                    console.log(`${handle.x} , ${handle.y} `)
+                    activated(handle.x,handle.y)
+                }
             }
         }
 
@@ -59,29 +75,23 @@ Item {
             height: root.width
             width: root.height
             MouseArea{
+                id:verticalArea
                 anchors.fill: parent
                 drag.target: handle
+                drag{
+                    axis:Drag.XandYAxis
+                    minimumY: 0
+                    maximumY: dragableArea.height  - root.width
+                    minimumX: 0
+                    maximumX: dragableArea.width - root.width
+
+                }
+                onPositionChanged: {
+                    console.log(`${handle.x} , ${handle.y} `)
+                    activated(handle.x,handle.y)
+                }
             }
         }
-        // MouseArea {
-        //     id: mouseArea
-        //     anchors.fill: parent
-        //     drag {
-        //         target:   horizontalBar
-        //         axis:     Drag.XAxis
-        //         minimumX: 0
-        //         maximumX: 1000
-        //     }
-
-        //     onPositionChanged:  if(drag.active) setPixels(dial.x + 0.5 * dial.width)
-        //     onClicked:                          setPixels(mouse.x)
-        // }
-        // function setPixels(pixels) {
-        //     // TotalWidth / (TotalWidth-dial.Width) * (argument-dial.width) + 0 (min)
-        //     var value = (maximum - minimum) / (root.width - dial.width) * (pixels - dial.width / 2) + minimum
-        //     // Send signal to root and passes the value onClick
-        //     clicked(Math.min(Math.max(minimum, value), maximum))
-        // }
     }
 
     //Added this function that will set the flag of which corner it is so that we can use the movement of that specific corner to adjust the cropping size

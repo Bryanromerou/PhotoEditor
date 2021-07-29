@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Button.qml</file>
+        <file>CroppableImage.qml</file>
+        <file>CropHandle.qml</file>
+        <file>CustomSlider.qml</file>
+        <file>InputText.qml</file>
+        <file>SizePicker.qml</file>
+        <file>Size.qml</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>img/undo-2.png</file>
+        <file>img/undo-1.png</file>
+        <file>img/rotate.png</file>
+        <file>img/redo-2.png</file>
+        <file>img/redo-1.png</file>
+    </qresource>
+    <qresource prefix="/"/>
+</RCC>
